@@ -5,6 +5,7 @@
 //  Created by 천문필 on 2/4/25.
 //
 
+/* 2/4 밤
 import Foundation
 
 struct Place: Identifiable, Codable {
@@ -27,5 +28,31 @@ struct Place: Identifiable, Codable {
         case operatingHours = "usetime"
         case latitude = "mapy"
         case longitude = "mapx"
+    }
+}
+*/
+
+import SwiftData
+
+@Model
+final class Place {
+    var id: String
+    var name: String
+    var address: String
+    var imageUrl: String
+    var region: String
+    var operatingHours: String?
+    var latitude: Double
+    var longitude: Double
+    
+    init(id: String, name: String, address: String, imageUrl: String, region: String, operatingHours: String? = nil, latitude: Double, longitude: Double) {
+        self.id = id
+        self.name = name
+        self.address = address
+        self.imageUrl = imageUrl
+        self.region = region
+        self.operatingHours = operatingHours
+        self.latitude = latitude
+        self.longitude = longitude
     }
 }

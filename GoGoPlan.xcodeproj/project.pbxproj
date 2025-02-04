@@ -15,22 +15,9 @@
 		A9CFE26C2D51EF0B00580768 /* GoGoPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoGoPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		357619922D51FD480072EF45 /* Exceptions for "GoGoPlan" folder in "GoGoPlan" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Resources/Info.plist,
-			);
-			target = A9CFE26B2D51EF0B00580768 /* GoGoPlan */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A9CFE26E2D51EF0C00580768 /* GoGoPlan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				357619922D51FD480072EF45 /* Exceptions for "GoGoPlan" folder in "GoGoPlan" target */,
-			);
 			path = GoGoPlan;
 			sourceTree = "<group>";
 		};
