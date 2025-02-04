@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CustomMapView: View {
+    let places: [Place]
+    @Binding var selectedPlace: Place?
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        // TODO: 지도 구현
+        Text("Map View")
     }
-}
-
-#Preview {
-    CustomMapView()
 }

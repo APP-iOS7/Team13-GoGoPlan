@@ -7,12 +7,17 @@
 
 import SwiftUI
 
-struct SearchPlaceView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+class SearchPlaceViewModel: ObservableObject {
+    @Published var searchResults: [Place] = []
+    @Published var selectedPlace: Place?
+    @Published var isLoading = false
+    @Published var error: Error?
+    
+    private let placeService: PlaceServiceProtocol
+    private let locationService: LocationServiceProtocol
+    
+    init(placeService: PlaceServiceProtocol, locationService: LocationServiceProtocol) {
+        self.placeService = placeService
+        self.locationService = locationService
     }
-}
-
-#Preview {
-    SearchPlaceView()
 }

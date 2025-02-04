@@ -7,12 +7,26 @@
 
 import SwiftUI
 
-struct RecommendedPlaces: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+class RecommendedPlacesViewModel: ObservableObject {
+    @Published var recommendedPlaces: [Place] = []
+    @Published var isLoading = false
+    @Published var error: Error?
+    
+    private let placeService: PlaceServiceProtocol
+    
+    init(placeService: PlaceServiceProtocol) {
+        self.placeService = placeService
     }
-}
-
-#Preview {
-    RecommendedPlaces()
+    
+    @MainActor
+    func fetchRecommendedPlaces() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            recommendedPlaces = try await placeService.fetchRecommendedPlaces()
+        } catch {
+            self.error = error
+        }
+    }
 }

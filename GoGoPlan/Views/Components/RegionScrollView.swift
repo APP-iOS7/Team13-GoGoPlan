@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct RegionScrollView: View {
+    @Binding var selectedRegion: String
+    let regions: [String]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(regions, id: \.self) { region in
+                    Button(region) {
+                        selectedRegion = region
+                    }
+                    .padding()
+                    .background(selectedRegion == region ? Color.blue : Color.gray)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+            }
+            .padding()
+        }
     }
-}
-
-#Preview {
-    RegionScrollView()
 }

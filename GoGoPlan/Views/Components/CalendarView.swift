@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @Binding var selectedDate: Date
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        // TODO: 달력 구현
+        Text("Calendar View")
     }
 }
 
-#Preview {
-    CalendarView()
-}
