@@ -10,6 +10,21 @@ class AuthService: ObservableObject {
     @Published var currentUser: User?
     @Published var error: Error?
     
+    // 앱 시작시 자동 로그인되게
+    init() {
+        // 앱 시작시 저장된 로그인 상태 확인
+        if UserDefaults.standard.bool(forKey: "isDevMode") {
+            self.currentUser = User(
+                id: "dev",
+                email: "dev@test.com",
+                loginType: .google,
+                name: "개발자",
+                profileUrl: nil
+            )
+        }
+    }
+    
+    
     func signInWithGoogle() async {
         guard let topVC = UIViewController.topViewController() else { return }
         

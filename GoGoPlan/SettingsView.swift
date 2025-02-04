@@ -3,7 +3,8 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var authService: AuthService
     @Environment(\.dismiss) var dismiss
-    
+    @AppStorage("isDevMode") private var isDevMode = false
+
     var body: some View {
         NavigationView {
             List {
@@ -41,7 +42,10 @@ struct SettingsView: View {
                         }
                     }
                 }
-                
+                // 개발자 모드로 해놓으면 자동 로그인 처리됨
+                Section("개발자 옵션") {
+                    Toggle("개발자 모드", isOn: $isDevMode)
+                }
                 Section("정보") {
                     HStack {
                         Text("버전")
