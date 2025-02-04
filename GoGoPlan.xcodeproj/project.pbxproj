@@ -6,13 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3576198C2D51FBEA0072EF45 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3576198B2D51FBEA0072EF45 /* GoogleSignIn */; };
+		3576198E2D51FBEA0072EF45 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3576198D2D51FBEA0072EF45 /* GoogleSignInSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		A9CFE26C2D51EF0B00580768 /* GoGoPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoGoPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		357619922D51FD480072EF45 /* Exceptions for "GoGoPlan" folder in "GoGoPlan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A9CFE26B2D51EF0B00580768 /* GoGoPlan */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A9CFE26E2D51EF0C00580768 /* GoGoPlan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				357619922D51FD480072EF45 /* Exceptions for "GoGoPlan" folder in "GoGoPlan" target */,
+			);
 			path = GoGoPlan;
 			sourceTree = "<group>";
 		};
@@ -23,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3576198C2D51FBEA0072EF45 /* GoogleSignIn in Frameworks */,
+				3576198E2D51FBEA0072EF45 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +85,8 @@
 			);
 			name = GoGoPlan;
 			packageProductDependencies = (
+				3576198B2D51FBEA0072EF45 /* GoogleSignIn */,
+				3576198D2D51FBEA0072EF45 /* GoogleSignInSwift */,
 			);
 			productName = GoGoPlan;
 			productReference = A9CFE26C2D51EF0B00580768 /* GoGoPlan.app */;
@@ -94,6 +116,9 @@
 			);
 			mainGroup = A9CFE2632D51EF0B00580768;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3576198A2D51FBEA0072EF45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A9CFE26D2D51EF0B00580768 /* Products */;
 			projectDirPath = "";
@@ -252,9 +277,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GoGoPlan/Preview Content\"";
-				DEVELOPMENT_TEAM = 8T35BG46VL;
+				DEVELOPMENT_TEAM = WY555M6676;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoGoPlan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -281,9 +307,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GoGoPlan/Preview Content\"";
-				DEVELOPMENT_TEAM = 8T35BG46VL;
+				DEVELOPMENT_TEAM = WY555M6676;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoGoPlan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -324,6 +351,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3576198A2D51FBEA0072EF45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3576198B2D51FBEA0072EF45 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3576198A2D51FBEA0072EF45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		3576198D2D51FBEA0072EF45 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3576198A2D51FBEA0072EF45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A9CFE2642D51EF0B00580768 /* Project object */;
 }
