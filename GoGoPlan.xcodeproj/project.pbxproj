@@ -19,7 +19,7 @@
 		357619922D51FD480072EF45 /* Exceptions for "GoGoPlan" folder in "GoGoPlan" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resources/Info.plist,
+				Info.plist,
 			);
 			target = A9CFE26B2D51EF0B00580768 /* GoGoPlan */;
 		};

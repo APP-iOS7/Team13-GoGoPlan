@@ -6,16 +6,19 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Plan: Identifiable, Codable {
-    let id: String
+@Model
+class Plan {
+    var id: String
     var region: String
     var date: Date
     var days: [Day]
     
-    struct Day: Identifiable, Codable {
-        let id: String
-        var places: [Place]
-        var memos: [Memo]
-    }
-}
+    init(id: String = UUID().uuidString, region: String = "", date: Date = Date(), days: [Day] = [])
+    {
+        self.id = id
+        self.region = region
+        self.date = date
+        self.days = days
+    }}

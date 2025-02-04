@@ -6,16 +6,18 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Place: Identifiable, Codable {
-    let id: String
-    let name: String
-    let address: String
-    let imageUrl: String
-    let region: String
+@Model
+class Place {
+    var id: String
+    var name: String
+    var address: String
+    var imageUrl: String?
+    var region: String
     var operatingHours: String?
-    let latitude: Double
-    let longitude: Double
+    var latitude: Double
+    var longitude: Double
     
     // 문화체육관광부 API 응답 매핑을 위한 CodingKeys
     enum CodingKeys: String, CodingKey {
@@ -28,4 +30,16 @@ struct Place: Identifiable, Codable {
         case latitude = "mapy"
         case longitude = "mapx"
     }
+    
+    init(id: String = "", name: String = "", address: String = "", imageUrl: String? = nil, region: String = "", operatingHours: String? = nil, latitude: Double = 0.0, longitude: Double = 0.0) {
+        self.id = id
+        self.name = name
+        self.address = address
+        self.imageUrl = imageUrl
+        self.region = region
+        self.operatingHours = operatingHours
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
 }
