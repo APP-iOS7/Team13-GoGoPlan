@@ -1,65 +1,18 @@
-//
-//  ContentView.swift
-//  GoGoPlan
-//
-//  Created by mwpark on 2/4/25.
-//
-/*
-import SwiftUI
-import SwiftData
-
-struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @StateObject private var authService = AuthService()
-    @State private var showingSettings = false  // 추가
-    
-    var body: some View {
-        Group {
-            if authService.currentUser != nil {
-                NavigationSplitView {
-                    Text("메인 화면")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: { showingSettings = true }) {
-                                Image(systemName: "gearshape")
-                            }
-                        }
-                    }
-                } detail: {
-                    Text("Select an item")
-                }
-                .sheet(isPresented: $showingSettings) {
-                    SettingsView()
-                        .environmentObject(authService)
-                }
-            } else {
-                LoginView()
-                    .environmentObject(authService)
-            }
-        }
-    }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
-*/
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = 0
-    @State private var showSettings = false
-    @State private var navigateToAddPlan = false
-    @ObservedObject var authService: AuthService
-    @StateObject private var placeService = PlaceService()
+    @State private var selectedTab = 0 // 현재 선택된 탭
+    @State private var showSettings = false // 설정 화면 표시 여부
+    @State private var navigateToAddPlan = false // 일정 추가 화면 이동 여부
+    @ObservedObject var authService: AuthService // 사용자 인증 서비스
+    @StateObject private var placeService = PlaceService() // 추천 여행지 서비스
     
     var body: some View {
         NavigationStack {
             TabView(selection: $selectedTab) {
                 // 추천 여행지 탭
                 VStack {
-                    headerView
+                    headerView // 상단 헤더
                     
                     ScrollView {
                         VStack(spacing: 20) {
@@ -69,7 +22,7 @@ struct ContentView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
                             
-                            RecommendedPlaces(placeService: placeService)
+                            RecommendedPlaces() // 추천 여행지 목록 ✅ 그냥 이렇게 호출하면 됨!
                         }
                         .padding(.top)
                     }
@@ -99,17 +52,20 @@ struct ContentView: View {
             .navigationDestination(isPresented: $navigateToAddPlan) {
                 AddPlanView(onComplete: {
                     navigateToAddPlan = false
-                    selectedTab = 1
+                    selectedTab = 1 // 일정 추가 후 '나의 일정' 탭으로 이동
                 })
             }
             .sheet(isPresented: $showSettings) {
-                SettingsView(authService: authService)
+                SettingsView(authService: authService) // 설정 화면
             }
+            .environmentObject(placeService)  // ✅ 하위 뷰에서 공유 가능하도록 설정
         }
     }
     
+    // 상단 헤더 뷰
     private var headerView: some View {
         HStack {
+            // 사용자 이름 및 설정 버튼
             Button(action: { showSettings = true }) {
                 Text("안녕하세요, \(authService.currentUser?.name ?? "")님")
                     .font(.headline)
@@ -117,6 +73,7 @@ struct ContentView: View {
             
             Spacer()
             
+            // 일정 추가 버튼
             Button(action: {
                 navigateToAddPlan = true
             }) {
@@ -131,8 +88,4 @@ struct ContentView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    ContentView(authService: AuthService())
 }

@@ -1,149 +1,9 @@
-//
-//  PlanListView.swift
-//  GoGoPlan
-//
-//  Created by 천문필 on 2/4/25.
-//
-/*
-import SwiftUI
-
-struct PlanListView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    PlanListView()
-}
-*/
-
-
-
-/*
-import SwiftUI
-import MapKit
-
-struct PlanListView: View {
-    @State private var selectedRegion: String = ""
-    @State private var selectedDates: [Date] = []
-    @State private var days: [Int] = []
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), // 서울 중심
-        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-    )
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            // 지역 및 날짜 표시
-            VStack(alignment: .leading, spacing: 8) {
-                if !selectedRegion.isEmpty {
-                    Text(selectedRegion)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                }
-                
-                if !selectedDates.isEmpty {
-                    Text(formatDates(selectedDates))
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal)
-            
-            // 지도 표시
-            Map(coordinateRegion: $region)
-                .frame(height: 200)
-                .cornerRadius(12)
-                .padding(.horizontal)
-            
-            // Day 리스트
-            ScrollView {
-                VStack(spacing: 20) {
-                    ForEach(days, id: \.self) { day in
-                        DaySection(dayNumber: day)
-                    }
-                    
-                    // Day 추가 버튼
-                    Button(action: addNewDay) {
-                        HStack {
-                            Image(systemName: "plus.circle.fill")
-                            Text("Day 추가")
-                        }
-                        .foregroundColor(.blue)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(8)
-                    }
-                    .padding(.horizontal)
-                }
-            }
-        }
-        .padding(.top)
-    }
-    
-    private func addNewDay() {
-        if let lastDay = days.last {
-            days.append(lastDay + 1)
-        } else {
-            days.append(1)
-        }
-    }
-    
-    private func formatDates(_ dates: [Date]) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
-        return dates.map { formatter.string(from: $0) }.joined(separator: " - ")
-    }
-}
-
-struct DaySection: View {
-    let dayNumber: Int
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Day \(String(format: "%02d", dayNumber))")
-                .font(.headline)
-                .padding(.horizontal)
-            
-            HStack(spacing: 12) {
-                Button(action: {}) {
-                    HStack {
-                        Image(systemName: "mappin.circle.fill")
-                        Text("장소 추가")
-                    }
-                    .foregroundColor(.blue)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 12)
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(8)
-                }
-                
-                Button(action: {}) {
-                    HStack {
-                        Image(systemName: "note.text")
-                        Text("메모 추가")
-                    }
-                    .foregroundColor(.blue)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 12)
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(8)
-                }
-            }
-            .padding(.horizontal)
-        }
-    }
-}
-*/
 import SwiftUI
 import SwiftData
 import MapKit
 
 struct PlanListView: View {
-    @Query private var plans: [Plan]
+    @Query(sort: \Plan.startDate, order: .reverse) private var plans: [Plan]
     @Environment(\.modelContext) private var modelContext
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780),
@@ -154,9 +14,10 @@ struct PlanListView: View {
     @State private var showSearchPlace = false
     @State private var showMemoView = false
     @State private var editingDay: Day?
+    @StateObject private var placeService = PlaceService()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 if let plan = selectedPlan {
                     VStack(alignment: .leading, spacing: 16) {
@@ -216,6 +77,7 @@ struct PlanListView: View {
                         }
                     }
                     .padding()
+                  
                  } else {
                      Text("일정을 선택해주세요")
                          .foregroundColor(.gray)
@@ -258,18 +120,23 @@ struct PlanListView: View {
                 }
             }
         }
-          .sheet(isPresented: $showSearchPlace) {
-              if let day = editingDay {
-                  SearchPlaceView(day: day)
-              }
-          }
-          .sheet(isPresented: $showMemoView) {
-              if let day = editingDay {
-                  MemoView(day: day)
-              }
-          }
-      }
-  }
+        .onAppear {
+            if selectedPlan == nil && !plans.isEmpty {
+                selectedPlan = plans.first
+            }
+        }
+        .sheet(isPresented: $showSearchPlace) {
+            if let day = editingDay {
+                SearchPlaceView(day: day, placeService: placeService)
+            }
+        }
+        .sheet(isPresented: $showMemoView) {
+            if let day = editingDay {
+                MemoView(day: day)
+            }
+        }
+    }
+}
 
 struct DaySection: View {
     let day: Day
