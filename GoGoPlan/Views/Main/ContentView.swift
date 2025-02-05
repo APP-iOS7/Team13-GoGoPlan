@@ -7,9 +7,11 @@ struct ContentView: View {
     @ObservedObject var authService: AuthService // 사용자 인증 서비스
     @StateObject private var placeService = PlaceService() // 추천 여행지 서비스
     
+    @EnvironmentObject private var appState: AppState
+    
     var body: some View {
         NavigationStack {
-            TabView(selection: $selectedTab) {
+            TabView(selection: $appState.selectedTab) {
                 // 추천 여행지 탭
                 VStack {
                     headerView // 상단 헤더
@@ -41,6 +43,7 @@ struct ContentView: View {
                     }
                     .tag(1)
                 
+                
                 // 즐겨찾기 탭
                 LikePlaceView()
                     .tabItem {
@@ -53,6 +56,7 @@ struct ContentView: View {
                 AddPlanView(onComplete: {
                     navigateToAddPlan = false
                     selectedTab = 1 // 일정 추가 후 '나의 일정' 탭으로 이동
+                    appState.selectedTab = 1
                 })
             }
             .sheet(isPresented: $showSettings) {
@@ -60,6 +64,7 @@ struct ContentView: View {
             }
             .environmentObject(placeService)  // ✅ 하위 뷰에서 공유 가능하도록 설정
         }
+        
     }
     
     // 상단 헤더 뷰

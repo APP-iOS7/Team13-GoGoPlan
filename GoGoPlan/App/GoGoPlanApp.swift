@@ -84,6 +84,7 @@ import Foundation
 struct GoGoPlanApp: App {
     @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @StateObject private var authService = AuthService()
+    @StateObject private var appState = AppState.shared
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -105,7 +106,17 @@ struct GoGoPlanApp: App {
         WindowGroup {
             ContentView(authService: authService)
                 .environmentObject(authService)
+                .environmentObject(appState)
         }
         .modelContainer(sharedModelContainer)
     }
+}
+
+// 앱의 전역변수
+class AppState: ObservableObject {
+    static let shared = AppState() // 싱글톤 인스턴스
+    
+    @Published var selectedTab: Int = 0
+    
+    private init() {} // 싱글톤을 위한 private 생성자
 }
