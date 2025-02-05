@@ -281,7 +281,7 @@ struct DaySection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Day \(day.dayNumber)")
-                .font(.title)
+                .font(.title2)
                
             // 메모 목록
             if !day.memos.isEmpty {
