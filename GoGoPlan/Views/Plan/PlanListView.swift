@@ -16,6 +16,8 @@ struct PlanListView: View {
     @State private var editingDay: Day?
     @StateObject private var placeService = PlaceService()
     
+    @EnvironmentObject private var appState: AppState
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -36,8 +38,8 @@ struct PlanListView: View {
                                         set: { plan.region = $0 }
                                     )) {
                                         ForEach(["서울", "경기", "인천", "강원", "충북", "충남", "대전", "세종",
-                                                "경북", "경남", "대구", "울산", "부산", "전북", "전남", "광주", "제주"],
-                                               id: \.self) { region in
+                                                 "경북", "경남", "대구", "울산", "부산", "전북", "전남", "광주", "제주"],
+                                                id: \.self) { region in
                                             Text(region).tag(region)
                                         }
                                     }
@@ -77,44 +79,47 @@ struct PlanListView: View {
                         }
                     }
                     .padding()
-                  
-                 } else {
-                     Text("일정을 선택해주세요")
-                         .foregroundColor(.gray)
-                         .padding()
-                 }
-             }
-             .onAppear {
-                 if selectedPlan == nil {
-                     selectedPlan = plans.last
-                 }
-                 else {
-                     selectedPlan = plans.sorted { $0.dateCreated < $1.dateCreated }.last
-                 }
-             }
+                    
+                } else {
+                    Text("일정을 선택해주세요")
+                        .foregroundColor(.gray)
+                        .padding()
+                }
+            }
+            .onAppear {
+                if selectedPlan == nil {
+                    selectedPlan = plans.last
+                }
+                else {
+                    selectedPlan = plans.sorted { $0.dateCreated < $1.dateCreated }.last
+                }
+            }
             .navigationTitle("나의 일정")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if !plans.isEmpty {
-                        Menu {
-                            ForEach(plans) { plan in
-                                Button(plan.region) {
-                                    selectedPlan = plan
+                if appState.selectedTab == 1 {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        // 다른 탭 뷰에서 보이는 문제!
+                        if !plans.isEmpty {
+                            Menu {
+                                ForEach(plans) { plan in
+                                    Button(plan.region) {
+                                        selectedPlan = plan
+                                    }
                                 }
-                            }
-                        } label: {
-                            HStack {
-                                Text(selectedPlan?.region ?? "일정 선택")
-                                Image(systemName: "chevron.down")
+                            } label: {
+                                HStack {
+                                    Text(selectedPlan?.region ?? "일정 선택")
+                                    Image(systemName: "chevron.down")
+                                }
                             }
                         }
                     }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if selectedPlan != nil {
-                        Button(isEditing ? "완료" : "수정") {
-                            isEditing.toggle()
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        if selectedPlan != nil {
+                            Button(isEditing ? "완료" : "수정") {
+                                isEditing.toggle()
+                            }
                         }
                     }
                 }
@@ -149,7 +154,7 @@ struct DaySection: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Day \(day.dayNumber)")
                 .font(.title)
-               
+            
             // 메모 목록
             if !day.memos.isEmpty {
                 VStack(spacing: 8) {
