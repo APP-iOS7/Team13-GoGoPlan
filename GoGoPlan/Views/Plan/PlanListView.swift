@@ -77,12 +77,21 @@ struct PlanListView: View {
                         }
                     }
                     .padding()
-                } else {
-                    Text("일정을 선택해주세요")
-                        .foregroundColor(.gray)
-                        .padding()
-                }
-            }
+                  
+                 } else {
+                     Text("일정을 선택해주세요")
+                         .foregroundColor(.gray)
+                         .padding()
+                 }
+             }
+             .onAppear {
+                 if selectedPlan == nil {
+                     selectedPlan = plans.last
+                 }
+                 else {
+                     selectedPlan = plans.sorted { $0.dateCreated < $1.dateCreated }.last
+                 }
+             }
             .navigationTitle("나의 일정")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -139,8 +148,8 @@ struct DaySection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Day \(day.dayNumber)")
-                .font(.headline)
-            
+                .font(.title)
+               
             // 메모 목록
             if !day.memos.isEmpty {
                 VStack(spacing: 8) {
