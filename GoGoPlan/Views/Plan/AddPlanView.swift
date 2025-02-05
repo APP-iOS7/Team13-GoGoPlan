@@ -56,10 +56,6 @@ struct AddPlanView: View {
     private func createPlan() {
         guard !selectedDates.isEmpty else { return }
         
-        //        let sortedDates = selectedDates.sorted()
-        //        guard let startDate = sortedDates.first,
-        //              let endDate = sortedDates.last else { return }
-        
         guard let startDate = selectedDates.min(), // 가장 빠른 날짜
               let endDate = selectedDates.max() else { return }
         
@@ -69,15 +65,6 @@ struct AddPlanView: View {
             startDate: startDate,
             endDate: endDate
         )
-        
-        // Day 객체들 생성
-        //        for (index, date) in sortedDates.enumerated() {
-        //            let day = Day(
-        //                date: date,
-        //                dayNumber: index + 1
-        //            )
-        //            plan.days.append(day)
-        //        }
         
         // startDate부터 endDate까지 하루씩 증가하며 Day 객체 생성
         var currentDate = startDate
