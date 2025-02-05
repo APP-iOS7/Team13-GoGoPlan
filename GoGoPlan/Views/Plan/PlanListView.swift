@@ -3,7 +3,7 @@ import SwiftData
 import MapKit
 
 struct PlanListView: View {
-    @Query private var plans: [Plan]
+    @Query(sort: \Plan.startDate, order: .reverse) private var plans: [Plan]
     @Environment(\.modelContext) private var modelContext
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780),
@@ -17,7 +17,7 @@ struct PlanListView: View {
     @StateObject private var placeService = PlaceService()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 if let plan = selectedPlan {
                     VStack(alignment: .leading, spacing: 16) {
@@ -109,6 +109,11 @@ struct PlanListView: View {
                         }
                     }
                 }
+            }
+        }
+        .onAppear {
+            if selectedPlan == nil && !plans.isEmpty {
+                selectedPlan = plans.first
             }
         }
         .sheet(isPresented: $showSearchPlace) {

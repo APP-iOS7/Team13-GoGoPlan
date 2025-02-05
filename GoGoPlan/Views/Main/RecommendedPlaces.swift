@@ -1,25 +1,25 @@
 import SwiftUI
 
 struct RecommendedPlaces: View {
-    @EnvironmentObject var placeService: PlaceService  // ✅ 부모에서 자동으로 받음
+    @EnvironmentObject var placeService: PlaceService
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) { // 가로 스크롤 가능한 목록
-            LazyHStack(spacing: 16) {
+        ScrollView(.vertical, showsIndicators: false) { // 세로 스크롤로 변경
+            LazyVStack(spacing: 16) { // HStack을 VStack으로 변경
                 ForEach(placeService.recommendedPlaces ?? [], id: \.id) { place in
-                    PlaceCard(place: place) // 개별 장소 카드
+                    PlaceCard(place: place)
                 }
             }
             .padding(.horizontal)
         }
         .task {
-            await placeService.fetchRecommendedPlaces() // 데이터 가져오기
+            await placeService.fetchRecommendedPlaces()
         }
     }
 }
 
 struct PlaceCard: View {
-    let place: Place // 여행지 정보
+    let place: Place
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -29,9 +29,9 @@ struct PlaceCard: View {
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                 } placeholder: {
-                    Color.gray // 로딩 중 회색 배경 표시
+                    Color.gray
                 }
-                .frame(width: 280, height: 200)
+                .frame(height: 200) // width 제한을 제거하고 height만 지정
                 .clipped()
                 .cornerRadius(12)
             }
@@ -45,7 +45,6 @@ struct PlaceCard: View {
                 .foregroundColor(.gray)
                 .lineLimit(2)
         }
-        .frame(width: 280)
+        // width 280 제한을 제거하여 화면 너비에 맞춤
     }
 }
-
