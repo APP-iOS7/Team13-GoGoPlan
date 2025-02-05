@@ -4,7 +4,7 @@
 //
 //  Created by mwpark on 2/4/25.
 //
-
+/*
 import SwiftUI
 import SwiftData
 
@@ -43,4 +43,89 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(for: Item.self, inMemory: true)
+}
+*/
+import SwiftUI
+
+struct ContentView: View {
+    @State private var selectedTab = 0
+    @State private var showAddPlan = false
+    @State private var showSettings = false
+    @ObservedObject var authService: AuthService
+    @StateObject private var placeService = PlaceService()
+    
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            // 추천 여행지 탭
+            VStack {
+                headerView
+                
+                ScrollView {
+                    VStack(spacing: 20) {
+                        Text("오늘의 추천 여행지")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                        
+                        RecommendedPlaces(placeService: placeService)
+                    }
+                    .padding(.top)
+                }
+            }
+            .tabItem {
+                Image(systemName: "house.fill")
+                Text("추천")
+            }
+            .tag(0)
+            
+            // 나의 일정 탭
+            PlanListView()
+                .tabItem {
+                    Image(systemName: "calendar")
+                    Text("나의 일정")
+                }
+                .tag(1)
+            
+            // 즐겨찾기 탭
+            LikePlaceView()
+                .tabItem {
+                    Image(systemName: "heart.fill")
+                    Text("즐겨찾기")
+                }
+                .tag(2)
+        }
+        .sheet(isPresented: $showAddPlan) {
+            AddPlanView()
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView(authService: authService)
+        }
+    }
+    
+    private var headerView: some View {
+        HStack {
+            Button(action: { showSettings = true }) {
+                Text("안녕하세요, \(authService.currentUser?.name ?? "")님")
+                    .font(.headline)
+            }
+            
+            Spacer()
+            
+            Button(action: { showAddPlan = true }) {
+                Text("일정만들기")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(Color.blue)
+                    .cornerRadius(8)
+            }
+        }
+        .padding()
+    }
+}
+
+#Preview {
+    ContentView(authService: AuthService())
 }
