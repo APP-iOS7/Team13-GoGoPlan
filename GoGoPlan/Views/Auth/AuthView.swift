@@ -1,7 +1,7 @@
 import SwiftUI
 import GoogleSignIn
 
-struct LoginView: View {    // AuthView -> LoginView로 이름 변경
+struct AuthView: View {    // iampeel. LoginView --> AuthView
     @EnvironmentObject var authService: AuthService
     
     var body: some View {
