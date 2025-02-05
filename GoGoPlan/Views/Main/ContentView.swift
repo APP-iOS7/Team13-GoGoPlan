@@ -34,7 +34,7 @@ struct ContentView: View {
                 }
                 .tabItem {
                     Image(systemName: "house.fill")
-                    Text("추천")
+                    Text("홈")
                 }
                 .tag(0)
                 
