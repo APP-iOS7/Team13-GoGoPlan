@@ -100,12 +100,18 @@ struct GoGoPlanApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
+    // iampeel. 변경
     var body: some Scene {
         WindowGroup {
-            ContentView(authService: authService)
-                .environmentObject(authService)
+            if authService.currentUser != nil {
+                ContentView(authService: authService)
+                    .environmentObject(authService)
+            } else {
+                AuthView()
+                    .environmentObject(authService)
+            }
         }
         .modelContainer(sharedModelContainer)
-    }
+    } //end
 }
