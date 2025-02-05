@@ -8,37 +8,12 @@ enum NetworkError: Error {
     case apiError(String)
 }
 
-struct TourAPIResponse<T: Decodable>: Decodable {
-    let response: Response<T>
-}
-
-struct Response<T: Decodable>: Decodable {
-    let header: Header
-    let body: Body<T>
-}
-
-struct Header: Decodable {
-    let resultCode: String
-    let resultMsg: String
-}
-
-struct Body<T: Decodable>: Decodable {
-    let items: Items<T>
-    let numOfRows: Int
-    let pageNo: Int
-    let totalCount: Int
-}
-
-struct Items<T: Decodable>: Decodable {
-    let item: [T]
-}
-
 @MainActor
 class NetworkService {
     static let shared = NetworkService()
     
-    private let baseURL = "https://apis.data.go.kr/B551011/KorService1"
-    private let apiKey: String = "" // TODO: API 키 입력 필요
+    private let baseURL = "http://apis.data.go.kr/B551011/KorService1"
+    private let apiKey = "IsuLk83FxV9CRLW90v2p6Q8fPtXohm8NWl4n63CmkxX/3PdnTUQPjS0TB0EJv5AWYEQN7QYTYQIGLTkJzDL1Ow=="
     
     private init() {}
     
@@ -61,22 +36,37 @@ class NetworkService {
             throw NetworkError.invalidURL
         }
         
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NetworkError.invalidResponse
-        }
-        
-        guard httpResponse.statusCode == 200 else {
-            throw NetworkError.apiError("Status code: \(httpResponse.statusCode)")
-        }
+        print("Request URL: \(url)")  // URL 디버깅용
         
         do {
-            let decoder = JSONDecoder()
-            return try decoder.decode(T.self, from: data)
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response type")
+                throw NetworkError.invalidResponse
+            }
+            
+            print("HTTP Status Code: \(httpResponse.statusCode)")
+            
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("Raw response: \(responseString)")
+            }
+            
+            guard httpResponse.statusCode == 200 else {
+                print("Error status code: \(httpResponse.statusCode)")
+                throw NetworkError.apiError("Status code: \(httpResponse.statusCode)")
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                return try decoder.decode(T.self, from: data)
+            } catch {
+                print("Decoding error: \(error)")
+                throw NetworkError.decodingError
+            }
         } catch {
-            print("Decoding error: \(error)")
-            throw NetworkError.decodingError
+            print("Network error: \(error)")
+            throw error
         }
     }
 }

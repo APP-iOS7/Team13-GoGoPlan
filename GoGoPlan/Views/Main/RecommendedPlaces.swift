@@ -1,10 +1,3 @@
-//
-//  RecommendedPlaces.swift
-//  GoGoPlan
-//
-//  Created by 천문필 on 2/4/25.
-//
-
 import SwiftUI
 
 struct RecommendedPlaces: View {
@@ -18,6 +11,9 @@ struct RecommendedPlaces: View {
                 }
             }
             .padding(.horizontal)
+        }
+        .task {
+            await placeService.fetchRecommendedPlaces()
         }
     }
 }
