@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @State private var selectedTab = 0 // 현재 선택된 탭
@@ -28,6 +29,8 @@ struct ContentView: View {
                         }
                         .padding(.top)
                     }
+                    // 스크롤 뷰 하단 영역_iampeel
+                    .padding(.bottom,10)
                 }
                 .tabItem {
                     Image(systemName: "house.fill")
@@ -94,3 +97,13 @@ struct ContentView: View {
         .padding()
     }
 }
+
+// 프리뷰_iampeel
+#Preview {
+    let authService = AuthService() // 가짜 인증 서비스 인스턴스
+
+    ContentView(authService: authService)
+        .environmentObject(AppState.shared)
+}
+
+
