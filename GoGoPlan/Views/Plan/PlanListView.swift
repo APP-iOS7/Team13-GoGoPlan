@@ -216,17 +216,12 @@ struct PlanListView: View {
                         }
                     }
                     .padding()
-                 } else {
-                     Text("일정을 선택해주세요")
-                         .foregroundColor(.gray)
-                         .padding()
-                 }
-             }
-             .onAppear {
-                 if selectedPlan == nil, let latestPlan = plans.last {
-                     selectedPlan = latestPlan
-                 }
-             }
+                } else {
+                    Text("일정을 선택해주세요")
+                        .foregroundColor(.gray)
+                        .padding()
+                }
+            }
             .navigationTitle("나의 일정")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -255,18 +250,18 @@ struct PlanListView: View {
                 }
             }
         }
-          .sheet(isPresented: $showSearchPlace) {
-              if let day = editingDay {
-                  SearchPlaceView(day: day)
-              }
-          }
-          .sheet(isPresented: $showMemoView) {
-              if let day = editingDay {
-                  MemoView(day: day)
-              }
-          }
-      }
-  }
+        .sheet(isPresented: $showSearchPlace) {
+            if let day = editingDay {
+                SearchPlaceView(day: day)
+            }
+        }
+        .sheet(isPresented: $showMemoView) {
+            if let day = editingDay {
+                MemoView(day: day)
+            }
+        }
+    }
+}
 
 struct DaySection: View {
     let day: Day

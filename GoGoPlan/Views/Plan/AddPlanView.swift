@@ -98,11 +98,7 @@ struct AddPlanView: View {
         // Plan을 ModelContext에 추가
         modelContext.insert(plan)
         
-        // 완료 콜백 호출
         onComplete()
     }
 }
 
-#Preview {
-    AddPlanView(onComplete: {})
-}

@@ -132,7 +132,3 @@ struct ContentView: View {
         .padding()
     }
 }
-
-#Preview {
-    ContentView(authService: AuthService())
-}
