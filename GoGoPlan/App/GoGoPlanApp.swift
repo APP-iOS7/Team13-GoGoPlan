@@ -38,6 +38,8 @@ struct GoGoPlanApp: App {
  AppDelegate 추가 (@UIApplicationDelegateAdaptor)
  AuthService를 environmentObject로 추가
  */
+
+/*
 import SwiftUI
 import SwiftData
 import GoogleSignIn
@@ -67,6 +69,42 @@ struct GoGoPlanApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(AuthService())
+        }
+        .modelContainer(sharedModelContainer)
+    }
+}
+*/
+
+import SwiftUI
+import SwiftData
+import GoogleSignIn
+import Foundation
+
+@main
+struct GoGoPlanApp: App {
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    @StateObject private var authService = AuthService()
+    
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            Memo.self,
+            Place.self,
+            Plan.self,
+            User.self
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        do {
+            return try ModelContainer(for: schema, configurations: modelConfiguration)
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView(authService: authService)
+                .environmentObject(authService)
         }
         .modelContainer(sharedModelContainer)
     }

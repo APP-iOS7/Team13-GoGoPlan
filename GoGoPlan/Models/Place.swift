@@ -4,7 +4,7 @@
 //
 //  Created by 천문필 on 2/4/25.
 //
-
+/*
 import Foundation
 import SwiftData
 
@@ -42,4 +42,101 @@ class Place {
         self.longitude = longitude
     }
     
+}
+*/
+
+/*
+import Foundation
+import SwiftData
+
+@Model
+class Place: Identifiable {
+    let id: String
+    var name: String
+    var address: String
+    var imageUrl: String?
+    
+    init(id: String, name: String, address: String, imageUrl: String? = nil) {
+        self.id = id
+        self.name = name
+        self.address = address
+        self.imageUrl = imageUrl
+    }
+}
+*/
+
+/*
+import Foundation
+import SwiftData
+import CoreLocation
+
+@Model
+class Place: Identifiable {
+    var id: String
+    var name: String
+    var address: String
+    var imageUrl: String?
+    var latitude: Double
+    var longitude: Double
+    var category: String?
+    
+    init(id: String = UUID().uuidString,
+         name: String,
+         address: String,
+         imageUrl: String? = nil,
+         latitude: Double,
+         longitude: Double,
+         category: String? = nil) {
+        self.id = id
+        self.name = name
+        self.address = address
+        self.imageUrl = imageUrl
+        self.latitude = latitude
+        self.longitude = longitude
+        self.category = category
+    }
+    
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+}
+*/
+
+import Foundation
+import SwiftData
+import CoreLocation
+
+@Model
+class Place: Identifiable {
+    var id: String
+    var name: String
+    var address: String
+    var imageUrl: String?
+    var latitude: Double
+    var longitude: Double
+    var category: String?
+    
+    var isFavorite: Bool
+    
+    init(id: String = UUID().uuidString,
+         name: String,
+         address: String,
+         imageUrl: String? = nil,
+         latitude: Double,
+         longitude: Double,
+         category: String? = nil,
+         isFavorite: Bool = false) {
+        self.id = id
+        self.name = name
+        self.address = address
+        self.imageUrl = imageUrl
+        self.latitude = latitude
+        self.longitude = longitude
+        self.category = category
+        self.isFavorite = isFavorite
+    }
+    
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
 }
