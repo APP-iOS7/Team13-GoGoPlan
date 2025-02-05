@@ -212,7 +212,8 @@ class PlaceService: ObservableObject {
     // 싱글톤 인스턴스
     static let shared = PlaceService()
     
-    private init() {
+    // 이니셜라이저를 public으로 변경
+    public init() {
         // 초기화 시 추천 장소 로드
         Task {
             await fetchRecommendedPlaces()

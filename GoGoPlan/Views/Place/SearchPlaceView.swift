@@ -223,6 +223,7 @@ struct PlaceSearchRow: View {
 }
 */
 
+import SwiftData
 import SwiftUI
 
 struct SearchPlaceView: View {
@@ -331,6 +332,54 @@ struct SearchPlaceView: View {
         }
     }
 }
+
+struct SelectedPlaceChip: View {
+    let place: Place
+    let onRemove: () -> Void
+    
+    var body: some View {
+        HStack {
+            Text(place.name)
+            Button(action: onRemove) {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundColor(.red)
+            }
+        }
+        .padding(8)
+        .background(Color.gray.opacity(0.2))
+        .cornerRadius(10)
+    }
+}
+
+
+struct PlaceSearchRow: View {
+    let place: Place
+    let isSelected: Bool
+    let onSelect: () -> Void
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(place.name)
+                Text(place.address)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Button(action: onSelect) {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .foregroundColor(isSelected ? .blue : .gray)
+            }
+        }
+        .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(10)
+    }
+}
+
+
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
