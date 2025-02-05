@@ -223,8 +223,11 @@ struct PlanListView: View {
                  }
              }
              .onAppear {
-                 if selectedPlan == nil, let latestPlan = plans.last {
-                     selectedPlan = latestPlan
+                 if selectedPlan == nil {
+                     selectedPlan = plans.last
+                 }
+                 else {
+                     selectedPlan = plans.sorted { $0.dateCreated < $1.dateCreated }.last
                  }
              }
             .navigationTitle("나의 일정")
