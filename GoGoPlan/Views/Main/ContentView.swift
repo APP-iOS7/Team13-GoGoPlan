@@ -49,57 +49,62 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedTab = 0
-    @State private var showAddPlan = false
     @State private var showSettings = false
+    @State private var navigateToAddPlan = false
     @ObservedObject var authService: AuthService
     @StateObject private var placeService = PlaceService()
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            // 추천 여행지 탭
-            VStack {
-                headerView
-                
-                ScrollView {
-                    VStack(spacing: 20) {
-                        Text("오늘의 추천 여행지")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                        
-                        RecommendedPlaces(placeService: placeService)
+        NavigationStack {
+            TabView(selection: $selectedTab) {
+                // 추천 여행지 탭
+                VStack {
+                    headerView
+                    
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            Text("오늘의 추천 여행지")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal)
+                            
+                            RecommendedPlaces(placeService: placeService)
+                        }
+                        .padding(.top)
                     }
-                    .padding(.top)
                 }
-            }
-            .tabItem {
-                Image(systemName: "house.fill")
-                Text("추천")
-            }
-            .tag(0)
-            
-            // 나의 일정 탭
-            PlanListView()
                 .tabItem {
-                    Image(systemName: "calendar")
-                    Text("나의 일정")
+                    Image(systemName: "house.fill")
+                    Text("추천")
                 }
-                .tag(1)
-            
-            // 즐겨찾기 탭
-            LikePlaceView()
-                .tabItem {
-                    Image(systemName: "heart.fill")
-                    Text("즐겨찾기")
-                }
-                .tag(2)
-        }
-        .sheet(isPresented: $showAddPlan) {
-            AddPlanView()
-        }
-        .sheet(isPresented: $showSettings) {
-            SettingsView(authService: authService)
+                .tag(0)
+                
+                // 나의 일정 탭
+                PlanListView()
+                    .tabItem {
+                        Image(systemName: "calendar")
+                        Text("나의 일정")
+                    }
+                    .tag(1)
+                
+                // 즐겨찾기 탭
+                LikePlaceView()
+                    .tabItem {
+                        Image(systemName: "heart.fill")
+                        Text("즐겨찾기")
+                    }
+                    .tag(2)
+            }
+            .navigationDestination(isPresented: $navigateToAddPlan) {
+                AddPlanView(onComplete: {
+                    navigateToAddPlan = false
+                    selectedTab = 1
+                })
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView(authService: authService)
+            }
         }
     }
     
@@ -112,7 +117,9 @@ struct ContentView: View {
             
             Spacer()
             
-            Button(action: { showAddPlan = true }) {
+            Button(action: {
+                navigateToAddPlan = true
+            }) {
                 Text("일정만들기")
                     .font(.headline)
                     .foregroundColor(.white)
