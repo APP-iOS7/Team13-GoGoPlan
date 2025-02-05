@@ -1,23 +1,19 @@
-//
-//  RecommendedPlaces.swift
-//  GoGoPlan
-//
-//  Created by 천문필 on 2/4/25.
-//
-
 import SwiftUI
 
 struct RecommendedPlaces: View {
-    @ObservedObject var placeService: PlaceService
+    @EnvironmentObject var placeService: PlaceService
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 16) {
+        ScrollView(.vertical, showsIndicators: false) { // 세로 스크롤로 변경
+            LazyVStack(spacing: 16) { // HStack을 VStack으로 변경
                 ForEach(placeService.recommendedPlaces ?? [], id: \.id) { place in
                     PlaceCard(place: place)
                 }
             }
             .padding(.horizontal)
+        }
+        .task {
+            await placeService.fetchRecommendedPlaces()
         }
     }
 }
@@ -35,7 +31,7 @@ struct PlaceCard: View {
                 } placeholder: {
                     Color.gray
                 }
-                .frame(width: 280, height: 200)
+                .frame(height: 200) // width 제한을 제거하고 height만 지정
                 .clipped()
                 .cornerRadius(12)
             }
@@ -49,10 +45,6 @@ struct PlaceCard: View {
                 .foregroundColor(.gray)
                 .lineLimit(2)
         }
-        .frame(width: 280)
+        // width 280 제한을 제거하여 화면 너비에 맞춤
     }
-}
-
-#Preview {
-    RecommendedPlaces(placeService: PlaceService())
 }

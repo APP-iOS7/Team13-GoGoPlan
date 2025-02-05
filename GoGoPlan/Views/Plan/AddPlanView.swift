@@ -1,22 +1,3 @@
-//
-//  AddPlanView.swift
-//  GoGoPlan
-//
-//  Created by 천문필 on 2/4/25.
-//
-/*
-import SwiftUI
-
-struct AddPlanView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    AddPlanView()
-}
-*/
 import SwiftUI
 import SwiftData
 
@@ -98,11 +79,9 @@ struct AddPlanView: View {
         // Plan을 ModelContext에 추가
         modelContext.insert(plan)
         
-        // 완료 콜백 호출
+        // 저장 후 화면 닫기
         onComplete()
+        presentationMode.wrappedValue.dismiss()
     }
 }
 
-#Preview {
-    AddPlanView(onComplete: {})
-}
