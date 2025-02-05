@@ -120,6 +120,15 @@ struct SelectedPlaceChip: View {
     
     var body: some View {
         HStack {
+            if let imageUrl = place.imageUrl {
+                AsyncImage(url: URL(string: imageUrl)) { image in
+                    image.resizable()
+                } placeholder: {
+                    Color.gray
+                }
+                .frame(width: 20, height: 20)
+                .cornerRadius(8)
+            }
             Text(place.name)
             Button(action: onRemove) {
                 Image(systemName: "xmark.circle.fill")

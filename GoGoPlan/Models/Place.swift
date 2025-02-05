@@ -117,6 +117,7 @@ class Place: Identifiable {
     var category: String?
     
     var isFavorite: Bool
+    var createdAt: Date
     
     init(id: String = UUID().uuidString,
          name: String,
@@ -125,7 +126,7 @@ class Place: Identifiable {
          latitude: Double,
          longitude: Double,
          category: String? = nil,
-         isFavorite: Bool = false) {
+         isFavorite: Bool = false, createdAt: Date = Date()) {
         self.id = id
         self.name = name
         self.address = address
@@ -134,6 +135,7 @@ class Place: Identifiable {
         self.longitude = longitude
         self.category = category
         self.isFavorite = isFavorite
+        self.createdAt = createdAt
     }
     
     var coordinate: CLLocationCoordinate2D {
