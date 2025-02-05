@@ -16,6 +16,8 @@ struct PlanListView: View {
     @State private var editingDay: Day?
     @StateObject private var placeService = PlaceService()
     
+    @EnvironmentObject private var appState: AppState
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -36,8 +38,8 @@ struct PlanListView: View {
                                         set: { plan.region = $0 }
                                     )) {
                                         ForEach(["서울", "경기", "인천", "강원", "충북", "충남", "대전", "세종",
-                                                "경북", "경남", "대구", "울산", "부산", "전북", "전남", "광주", "제주"],
-                                               id: \.self) { region in
+                                                 "경북", "경남", "대구", "울산", "부산", "전북", "전남", "광주", "제주"],
+                                                id: \.self) { region in
                                             Text(region).tag(region)
                                         }
                                     }
@@ -77,44 +79,47 @@ struct PlanListView: View {
                         }
                     }
                     .padding()
-                  
-                 } else {
-                     Text("일정을 선택해주세요")
-                         .foregroundColor(.gray)
-                         .padding()
-                 }
-             }
-             .onAppear {
-                 if selectedPlan == nil {
-                     selectedPlan = plans.last
-                 }
-                 else {
-                     selectedPlan = plans.sorted { $0.dateCreated < $1.dateCreated }.last
-                 }
-             }
+                    
+                } else {
+                    Text("일정을 선택해주세요")
+                        .foregroundColor(.gray)
+                        .padding()
+                }
+            }
+            .onAppear {
+                if selectedPlan == nil {
+                    selectedPlan = plans.last
+                }
+                else {
+                    selectedPlan = plans.sorted { $0.dateCreated < $1.dateCreated }.last
+                }
+            }
             .navigationTitle("나의 일정")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if !plans.isEmpty {
-                        Menu {
-                            ForEach(plans) { plan in
-                                Button(plan.region) {
-                                    selectedPlan = plan
+                if appState.selectedTab == 1 {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        // 다른 탭 뷰에서 보이는 문제!
+                        if !plans.isEmpty {
+                            Menu {
+                                ForEach(plans) { plan in
+                                    Button(plan.region) {
+                                        selectedPlan = plan
+                                    }
                                 }
-                            }
-                        } label: {
-                            HStack {
-                                Text(selectedPlan?.region ?? "일정 선택")
-                                Image(systemName: "chevron.down")
+                            } label: {
+                                HStack {
+                                    Text(selectedPlan?.region ?? "일정 선택")
+                                    Image(systemName: "chevron.down")
+                                }
                             }
                         }
                     }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if selectedPlan != nil {
-                        Button(isEditing ? "완료" : "수정") {
-                            isEditing.toggle()
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        if selectedPlan != nil {
+                            Button(isEditing ? "완료" : "수정") {
+                                isEditing.toggle()
+                            }
                         }
                     }
                 }
@@ -138,51 +143,51 @@ struct PlanListView: View {
     }
 }
 
-struct DaySection: View {
-    let day: Day
-    let isEditing: Bool
-    let onAddPlace: () -> Void
-    let onAddMemo: () -> Void
-    let onDelete: (Place) -> Void
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Day \(day.dayNumber)")
-                .font(.title)
-               
-            // 메모 목록
-            if !day.memos.isEmpty {
-                VStack(spacing: 8) {
-                    ForEach(day.memos) { memo in
-                        MemoRow(memo: memo)
-                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
-                    }
-                }
-            }
-            
-            HStack(spacing: 8) {
-                Button(action: onAddPlace) {
-                    Label("장소 추가", systemImage: "mappin.circle.fill")
-                }
-                .buttonStyle(.bordered)
-                
-                Button(action: onAddMemo) {
-                    Label("메모 추가", systemImage: "square.and.pencil")
-                }
-                .buttonStyle(.bordered)
-            }
-            
-            if !day.memos.isEmpty {
-                ForEach(day.memos) { memo in
-                    MemoRow(memo: memo)
-                }
-            }
-        }
-        .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(12)
-    }
-}
+//struct DaySection: View {
+//    let day: Day
+//    let isEditing: Bool
+//    let onAddPlace: () -> Void
+//    let onAddMemo: () -> Void
+//    let onDelete: (Place) -> Void
+//    
+//    var body: some View {
+//        VStack(alignment: .leading, spacing: 12) {
+//            Text("Day \(day.dayNumber)")
+//                .font(.title)
+//            
+//            // 메모 목록
+//            if !day.memos.isEmpty {
+//                VStack(spacing: 8) {
+//                    ForEach(day.memos) { memo in
+//                        MemoRow(memo: memo)
+//                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
+//                    }
+//                }
+//            }
+//            
+//            HStack(spacing: 8) {
+//                Button(action: onAddPlace) {
+//                    Label("장소 추가", systemImage: "mappin.circle.fill")
+//                }
+//                .buttonStyle(.bordered)
+//                
+//                Button(action: onAddMemo) {
+//                    Label("메모 추가", systemImage: "square.and.pencil")
+//                }
+//                .buttonStyle(.bordered)
+//            }
+//            
+//            if !day.memos.isEmpty {
+//                ForEach(day.memos) { memo in
+//                    MemoRow(memo: memo)
+//                }
+//            }
+//        }
+//        .padding()
+//        .background(Color.gray.opacity(0.1))
+//        .cornerRadius(12)
+//    }
+//}
 
 struct PlaceRow: View {
     let place: Place
