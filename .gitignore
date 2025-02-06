@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift
 
 
-.DS_Store
+
 ### Swift ###
 # Xcode
 #
@@ -10,7 +10,7 @@
 
 ## User settings
 xcuserdata/
-.DS_Store
+
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint
 *.xccheckout
