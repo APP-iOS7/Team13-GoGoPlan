@@ -6,7 +6,7 @@ struct SearchPlaceView: View {
     @State private var searchText = ""
     @State private var selectedPlaces: Set<Place> = []
     @ObservedObject var placeService: PlaceService
-
+    
     let day: Day
     
     init(day: Day, placeService: PlaceService) {

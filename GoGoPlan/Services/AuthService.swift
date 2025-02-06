@@ -3,8 +3,6 @@ import GoogleSignIn
 import SwiftUI
 import SwiftData
 
-
-// Services/AuthService.swift
 @MainActor
 class AuthService: ObservableObject {
     @Published var currentUser: User?
