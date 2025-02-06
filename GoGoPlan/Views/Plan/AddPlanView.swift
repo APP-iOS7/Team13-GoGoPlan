@@ -35,7 +35,7 @@ struct AddPlanView: View {
                     .background(
                         selectedDates.isEmpty ?
                         Color.gray :
-                            Color.blue
+                        Color.blue
                     )
                     .cornerRadius(10)
             }
@@ -56,8 +56,9 @@ struct AddPlanView: View {
     private func createPlan() {
         guard !selectedDates.isEmpty else { return }
         
-        guard let startDate = selectedDates.min(), // 가장 빠른 날짜
-              let endDate = selectedDates.max() else { return }
+        let sortedDates = selectedDates.sorted()
+        guard let startDate = sortedDates.first,
+              let endDate = sortedDates.last else { return }
         
         // 새로운 Plan 생성
         let plan = Plan(
@@ -66,19 +67,13 @@ struct AddPlanView: View {
             endDate: endDate
         )
         
-        // startDate부터 endDate까지 하루씩 증가하며 Day 객체 생성
-        var currentDate = startDate
-        var dayNumber = 1
-        while currentDate <= endDate {
+        // Day 객체들 생성
+        for (index, date) in sortedDates.enumerated() {
             let day = Day(
-                date: currentDate,
-                dayNumber: dayNumber
+                date: date,
+                dayNumber: index + 1
             )
             plan.days.append(day)
-            
-            // 하루를 증가시킴
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
-            dayNumber += 1
         }
         
         // Plan을 ModelContext에 추가
