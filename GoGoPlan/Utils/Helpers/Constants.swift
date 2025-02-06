@@ -1,9 +1,3 @@
-//
-//  Constants.swift
-//  GoGoPlan
-//
-//  Created by Seonghoon Lee on 2/6/25.
-//
 import SwiftUI
 import Foundation
 
